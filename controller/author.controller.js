@@ -1,4 +1,5 @@
 const AuthorSchema = require("../schema/author.schema");
+const BookSchema = require("../schema/book.schema");
 
 /// get all
 
@@ -79,7 +80,20 @@ const getOneAuthor = async (req, res) => {
       });
     }
 
-    res.status(200).json(author);
+    const books = await BookSchema.find({ author_id: id });
+
+    // const authorObj = author.toObject();
+    // authorObj.books = books;
+
+    // authorObj.books = books.map((book) => ({
+    //   _id: book._id,
+    //   title: book.title,
+    // }));
+
+    res.status(200).json({
+      author,
+      books,
+    });
   } catch (error) {
     console.log(error.message);
   }

@@ -4,7 +4,13 @@ const BookSchema = require("../schema/book.schema");
 
 const getAllBooks = async (req, res) => {
   try {
-    const books = await BookSchema.find();
+    const books = await BookSchema.find()
+    .populate("author_id", "-_id");
+    // .select("-_id")
+    // .select("title genre")
+    // .limit(2)
+    // .skip(1)
+
     res.status(200).json(books);
   } catch (error) {
     console.log(error.message);
@@ -20,10 +26,12 @@ const addBook = async (req, res) => {
       pages,
       published_year,
       image_url,
-      discription,
+      description,
       genre,
       period,
       published_home,
+      publishers_phone_number,
+      author_id
     } = req.body;
 
     await BookSchema.create({
@@ -31,10 +39,12 @@ const addBook = async (req, res) => {
       pages,
       published_year,
       image_url,
-      discription,
+      description,
       genre,
       period,
       published_home,
+      publishers_phone_number,
+      author_id
     });
 
     res.status(201).json({
@@ -82,10 +92,12 @@ async function updateBook(req, res) {
       pages,
       published_year,
       image_url,
-      discription,
+      description,
       genre,
       period,
       published_home,
+      publishers_phone_number,
+      author_id
     } = req.body;
 
     await BookSchema.findByIdAndUpdate(id, {
@@ -93,10 +105,12 @@ async function updateBook(req, res) {
       pages,
       published_year,
       image_url,
-      discription,
+      description,
       genre,
       period,
       published_home,
+      publishers_phone_number,
+      author_id
     });
 
     res.status(200).json({
