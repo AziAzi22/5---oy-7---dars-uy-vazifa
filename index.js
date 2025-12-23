@@ -3,19 +3,29 @@ const cors = require("cors");
 const connectDB = require("./config/db.config");
 const authorRouter = require("./router/author.routes");
 const bookRouter = require("./router/book.routes");
+const uploadRouter = require("./router/upload.routes");
+const authRouter = require("./router/auth.routes");
+const adminRouter = require("./router/admin.routes");
 require("dotenv").config();
+// const socket = require("socket.io");
+// const upload = require("./utils/multer");
 
 const app = express();
 
 app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
 
-
 connectDB();
 
 // routes
 app.use(authorRouter);
-app.use(bookRouter)
+app.use(bookRouter);
+app.use(uploadRouter);
+app.use(authRouter);
+app.use(adminRouter);
+
+// multer/
+app.use("/images", express.static("upload/images"));
 
 const PORT = +process.env.PORT || 3000;
 
