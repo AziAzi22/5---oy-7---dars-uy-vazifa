@@ -12,7 +12,7 @@ const AuthorSchema = new Schema(
       match: [/^[a-zA-Z\s]+$/, "full name can only contain letters"],
       // alias: "to'liq ism",
     },
-    birt_year: {
+    birth_year: {
       type: Number,
       required: true,
       max: [

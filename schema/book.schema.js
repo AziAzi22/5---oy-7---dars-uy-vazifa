@@ -36,9 +36,8 @@ const Book = new Schema(
       trim: true,
     },
     genre: {
-      type: String,
+      type: [String],
       required: false,
-      set: (genre) => genre.toLowerCase(),
       enum: {
         values: [
           "romance",

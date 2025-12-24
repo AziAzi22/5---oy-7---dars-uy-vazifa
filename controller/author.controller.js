@@ -41,7 +41,7 @@ const addAuthor = async (req, res, next) => {
   try {
     const {
       full_name,
-      birt_year,
+      birth_year,
       death_year,
       image_url,
       bio,
@@ -53,7 +53,7 @@ const addAuthor = async (req, res, next) => {
 
     await AuthorSchema.create({
       full_name,
-      birt_year,
+      birth_year,
       death_year,
       image_url,
       bio,
@@ -112,7 +112,7 @@ async function updateAuthor(req, res, next) {
 
     const {
       full_name,
-      birt_year,
+      birth_year,
       death_year,
       image_url,
       bio,
@@ -124,7 +124,7 @@ async function updateAuthor(req, res, next) {
 
     await AuthorSchema.findByIdAndUpdate(id, {
       full_name,
-      birt_year,
+      birth_year,
       death_year,
       image_url,
       bio,

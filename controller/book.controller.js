@@ -40,7 +40,7 @@ const addBook = async (req, res, next) => {
       published_year,
       image_url,
       description,
-      genre,
+      genre: genre.split(",").map((g) => g.trim().toLowerCase()),
       period,
       published_home,
       publishers_phone_number,

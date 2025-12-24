@@ -1,8 +1,8 @@
 const CustomErrorHandler = require("../utils/custom-error-handler");
-const { AuthorValidator } = require("../validator/author.validation");
+const { LoginValidator } = require("../validator/login.validator");
 
 module.exports = function (req, res, next) {
-  const { error } = AuthorValidator(req.body);
+  const { error } = LoginValidator(req.body);
 
   if (error) {
     throw CustomErrorHandler.BadRequest(error.message);

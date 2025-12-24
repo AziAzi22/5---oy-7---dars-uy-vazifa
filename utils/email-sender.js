@@ -8,7 +8,7 @@ const sendMessage = async (email, code) => {
       secure: true,
       auth: {
         user: "aziazi22t@gmail.com",
-        pass: "cfybrkirkdxpckaw",
+        pass: "ubllcarzqskxcpie",
       },
     });
 

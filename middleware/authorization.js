@@ -6,7 +6,7 @@ const authorization = (req, res, next) => {
 
     if (!bearerToken) {
       return res.status(401).json({
-        messsage: "Bearer token not found",
+        message: "Bearer token not found",
       });
     }
 
@@ -14,29 +14,31 @@ const authorization = (req, res, next) => {
 
     if (token[0] !== "Bearer") {
       return res.status(401).json({
-        messsage: "Bearer token is required",
+        message: "Bearer token is required",
       });
     }
 
     if (!token[1]) {
       return res.status(401).json({
-        messsage: "token not found",
+        message: "token not found",
       });
     }
 
     const decode = jwt.verify(token[1], process.env.SECRET_KEY);
+    req.user = decode;
+
     if (decode.role !== "admin" && decode.role !== "superadmin") {
       return res.status(403).json({
-        messsage: "you are not a admin",
+        message: "you are not a admin",
       });
     }
 
     next();
   } catch (error) {
     res.status(500).json({
-      messsage: error.messsage,
+      message: error.message,
     });
   }
 };
 
-module.exports = authorization
+module.exports = authorization;

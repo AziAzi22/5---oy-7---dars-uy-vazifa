@@ -1,18 +1,19 @@
-/// Role Upgrade
+
 
 const AuthSchema = require("../schema/auth.schema");
 const CustomErrorHandler = require("../utils/custom-error-handler");
 
-const roleUpgrade = (req, res, next) => {
+const roleUpgrade = async (req, res, next) => {
   try {
     const { id } = req.body;
-    const user = AuthSchema.findOne({ _id: id });
+    const user = await AuthSchema.findById(id);
 
     if (!user) {
       throw CustomErrorHandler.NotFound("User not found");
     }
 
     user.role = "admin";
+    await user.save();
 
     res.status(200).json({
       message: "user role is upgrade",
@@ -24,15 +25,17 @@ const roleUpgrade = (req, res, next) => {
 
 ///  downgrade
 
-const downgrade = (req, res, next) => {
+const downgrade = async (req, res, next) => {
   try {
     const { id } = req.body;
-    const user = AuthSchema.findOne({ _id: id });
+    const user = await AuthSchema.findById(id);
+
     if (!user) {
       throw CustomErrorHandler.NotFound("User not found");
     }
 
     user.role = "user";
+    await user.save();
 
     res.status(200).json({
       message: "user role is downgrade",
@@ -44,9 +47,9 @@ const downgrade = (req, res, next) => {
 
 /// get all user
 
-const getAllUser = (req, res, next) => {
+const getAllUser = async (req, res, next) => {
   try {
-    const users = AuthSchema.find();
+    const users = await AuthSchema.find().select("-password")
     res.status(200).json(users);
   } catch (error) {
     next(error);
