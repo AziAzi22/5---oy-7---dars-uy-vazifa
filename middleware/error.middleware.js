@@ -10,8 +10,15 @@ module.exports = function (err, req, res, next) {
 
     if (err.name === "ValidationError") {
       const errorMessages = err.message.split(",");
-      res.status(400).json({
+      return res.status(400).json({
         message: errorMessages,
+      });
+    }
+
+    if (err.code === 11000) {
+      return res.status(409).json({
+        message: "Duplicate field value",
+        fields: Object.keys(err.keyValue),
       });
     }
 

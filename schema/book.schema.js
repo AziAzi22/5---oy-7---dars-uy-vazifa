@@ -66,7 +66,7 @@ const Book = new Schema(
           "travel",
           "education",
           "dystopian",
-          "childrens literatur",
+          "childrens literature",
           "young adult",
         ],
         message: "{VALUE} is not supported",

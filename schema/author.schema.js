@@ -39,7 +39,7 @@ const AuthorSchema = new Schema(
     bio: {
       type: String,
       required: false,
-      maxLength: [1000, "length must be maximum 1000 characters"],
+      maxLength: [10000, "length must be maximum 1000 characters"],
       trim: true,
     },
     genre: {
@@ -74,7 +74,7 @@ const AuthorSchema = new Schema(
           "travel",
           "education",
           "dystopian",
-          "childrens literatur",
+          "childrens literature",
           "young adult",
         ],
         message: "{VALUE} is not supported",

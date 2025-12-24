@@ -16,4 +16,8 @@ module.exports = class CustomErrorHandler extends Error {
   static NotFound(message, errors = []) {
     return new CustomErrorHandler(404, message, errors);
   }
+
+  static AlreadyExist(message, errors = []) {
+    return new CustomErrorHandler(404, message, errors);
+  }
 };
