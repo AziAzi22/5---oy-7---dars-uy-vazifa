@@ -1,16 +1,15 @@
 /// Role Upgrade
 
 const AuthSchema = require("../schema/auth.schema");
+const CustomErrorHandler = require("../utils/custom-error-handler");
 
-const roleUpgrade = (req, res) => {
+const roleUpgrade = (req, res, next) => {
   try {
     const { id } = req.body;
     const user = AuthSchema.findOne({ _id: id });
 
     if (!user) {
-      return res.status(404).json({
-        message: "User not found",
-      });
+      throw CustomErrorHandler.NotFound("User not found");
     }
 
     user.role = "admin";
@@ -19,22 +18,18 @@ const roleUpgrade = (req, res) => {
       message: "user role is upgrade",
     });
   } catch (error) {
-    res.status(500).json({
-      message: error.message,
-    });
+    next(error);
   }
 };
 
 ///  downgrade
 
-const downgrade = (req, res) => {
+const downgrade = (req, res, next) => {
   try {
     const { id } = req.body;
     const user = AuthSchema.findOne({ _id: id });
     if (!user) {
-      return res.status(404).json({
-        message: "User not found",
-      });
+      throw CustomErrorHandler.NotFound("User not found");
     }
 
     user.role = "user";
@@ -43,22 +38,18 @@ const downgrade = (req, res) => {
       message: "user role is downgrade",
     });
   } catch (error) {
-    res.status(500).json({
-      message: error.message,
-    });
+    next(error);
   }
 };
 
 /// get all user
 
-const getAllUser = (req, res) => {
+const getAllUser = (req, res, next) => {
   try {
     const users = AuthSchema.find();
     res.status(200).json(users);
   } catch (error) {
-    res.status(500).json({
-      message: error.message,
-    });
+    next(error);
   }
 };
 

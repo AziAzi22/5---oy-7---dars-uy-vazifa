@@ -7,14 +7,15 @@ const {
   deleteAuthor,
   search,
 } = require("../controller/author.controller");
+const authorization = require("../middleware/authorization");
 
 const authorRouter = Router();
 
 authorRouter.get("/get_all_authors", getAllAuthor);
-authorRouter.post("/add_author", addAuthor);
 authorRouter.get("/get_one_author/:id", getOneAuthor);
-authorRouter.put("/update_author/:id", updateAuthor);
-authorRouter.delete("/delete_author/:id", deleteAuthor);
+authorRouter.post("/add_author",  addAuthor);
+authorRouter.put("/update_author/:id", authorization, updateAuthor);
+authorRouter.delete("/delete_author/:id", authorization, deleteAuthor);
 authorRouter.get("/search", search);
 
 module.exports = authorRouter;

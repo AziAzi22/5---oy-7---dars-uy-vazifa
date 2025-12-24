@@ -6,13 +6,14 @@ const {
   updateBook,
   deleteBook,
 } = require("../controller/book.controller");
+const authorization = require("../middleware/authorization");
 
 const bookRouter = Router();
 
 bookRouter.get("/get_all_books", getAllBooks);
-bookRouter.post("/add_book", addBook);
 bookRouter.get("/get_one_book/:id", getOneBook);
-bookRouter.put("/update_book/:id", updateBook);
-bookRouter.delete("/delete_book/:id", deleteBook);
+bookRouter.post("/add_book", authorization, addBook);
+bookRouter.put("/update_book/:id", authorization, updateBook);
+bookRouter.delete("/delete_book/:id", authorization, deleteBook);
 
 module.exports = bookRouter;

@@ -1,32 +1,27 @@
+const CustomErrorHandler = require("../utils/custom-error-handler");
 const upload = require("../utils/multer");
 require("dotenv").config();
 const PORT = process.env.PORT;
 
 // single upload
 
-const singleUpload = (req, res) => {
+const singleUpload = (req, res, next) => {
   try {
     if (!req.file) {
-      return res.status(400).json({
-        message: "file not uploaded",
-      });
+      throw CustomErrorHandler.BadRequest("No file uploaded");
     }
     res.status(201).json({
       filePath: "http://localhost:" + PORT + "/images/" + req.file.filename,
     });
   } catch (error) {
-    res.status(500).json({
-      error: error.message,
-    });
+    next(error);
   }
 };
 
-const multiUpload = (req, res) => {
+const multiUpload = (req, res, next) => {
   try {
     if (!req.files || req.files.length === 0) {
-      return res.status(400).json({
-        message: "files not uploaded",
-      });
+      throw CustomErrorHandler.BadRequest("No files uploaded");
     }
     res.status(201).json({
       filePath: req.files.map(
@@ -34,9 +29,7 @@ const multiUpload = (req, res) => {
       ),
     });
   } catch (error) {
-    res.status(500).json({
-      error: error.message,
-    });
+    next(error);
   }
 };
 

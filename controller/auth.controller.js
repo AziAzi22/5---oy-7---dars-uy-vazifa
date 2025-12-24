@@ -1,10 +1,10 @@
-const sendMessage = require("../utils/email-sender.js")
+const sendMessage = require("../utils/email-sender.js");
 const bcrypt = require("bcryptjs");
 const tokenGenerotor = require("../utils/token-generator");
 const AuthSchema = require("../schema/auth.schema");
 
 // register
-const register = async (req, res) => {
+const register = async (req, res, next) => {
   try {
     const { email, password, username } = req.body;
 
@@ -25,24 +25,20 @@ const register = async (req, res) => {
       message: "registred ✌️",
     });
   } catch (error) {
-    res.status(500).json({
-      message: error.message,
-    });
+    next(error);
   }
 };
 
 // login
 
-const login = async (req, res) => {
+const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
     const user = await AuthSchema.findOne({ email });
 
     if (!user) {
-      return res.status(404).json({
-        message: "you are not registered",
-      });
+      throw CustomErrorHandler.NotFound("you are not registered");
     }
 
     const decode = await bcrypt.compare(password, user.password);
@@ -64,9 +60,7 @@ const login = async (req, res) => {
       });
     }
   } catch (error) {
-    res.status(500).json({
-      message: error.message,
-    });
+    next(error);
   }
 };
 

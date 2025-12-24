@@ -1,9 +1,10 @@
 const AuthorSchema = require("../schema/author.schema");
 const BookSchema = require("../schema/book.schema");
+const CustomErrorHandler = require("../utils/custom-error-handler");
 
 /// get all
 
-const getAllAuthor = async (req, res) => {
+const getAllAuthor = async (req, res, next) => {
   try {
     const authors = await AuthorSchema.find().populate({
       path: "books",
@@ -11,13 +12,13 @@ const getAllAuthor = async (req, res) => {
     });
     res.status(200).json(authors);
   } catch (error) {
-    console.log(error.message);
+    next(error);
   }
 };
 
 /// search
 
-async function search(req, res) {
+async function search(req, res, next) {
   try {
     const { name } = req.query;
 
@@ -30,13 +31,13 @@ async function search(req, res) {
 
     res.status(200).json(searchingResult);
   } catch (error) {
-    console.log(error.message);
+    next(error);
   }
 }
 
 // add author
 
-const addAuthor = async (req, res) => {
+const addAuthor = async (req, res, next) => {
   try {
     const {
       full_name,
@@ -66,13 +67,13 @@ const addAuthor = async (req, res) => {
       message: "Added new Author",
     });
   } catch (error) {
-    console.log(error.message);
+    next(error);
   }
 };
 
 /// get one
 
-const getOneAuthor = async (req, res) => {
+const getOneAuthor = async (req, res, next) => {
   try {
     const { id } = req.params;
     const author = await AuthorSchema.findById(id).populate(
@@ -81,9 +82,7 @@ const getOneAuthor = async (req, res) => {
     );
 
     if (!author) {
-      return res.status(404).json({
-        message: "Author not found",
-      });
+      throw CustomErrorHandler.NotFound("Author not found");
     }
 
     // const authorObj = author.toObject();
@@ -96,21 +95,19 @@ const getOneAuthor = async (req, res) => {
 
     res.status(200).json(author);
   } catch (error) {
-    console.log(error.message);
+    next(error);
   }
 };
 
 // update author
 
-async function updateAuthor(req, res) {
+async function updateAuthor(req, res, next) {
   try {
     const { id } = req.params;
     const author = await AuthorSchema.findById(id);
 
     if (!author) {
-      return res.status(404).json({
-        message: "Author not found",
-      });
+      throw CustomErrorHandler.NotFound("Author not found");
     }
 
     const {
@@ -141,21 +138,19 @@ async function updateAuthor(req, res) {
       message: "Author updated",
     });
   } catch (error) {
-    console.log(error.message);
+    next(error);
   }
 }
 
 // delete
 
-async function deleteAuthor(req, res) {
+async function deleteAuthor(req, res, next) {
   try {
     const { id } = req.params;
     const author = await AuthorSchema.findById(id);
 
     if (!author) {
-      return res.status(404).json({
-        message: "Author not found",
-      });
+      throw CustomErrorHandler.NotFound("Author not found");
     }
 
     await AuthorSchema.findByIdAndDelete(id);
@@ -164,7 +159,7 @@ async function deleteAuthor(req, res) {
       message: "Author deleted",
     });
   } catch (error) {
-    console.log(error.message);
+    next(error);
   }
 }
 

@@ -6,9 +6,8 @@ const bookRouter = require("./router/book.routes");
 const uploadRouter = require("./router/upload.routes");
 const authRouter = require("./router/auth.routes");
 const adminRouter = require("./router/admin.routes");
+const errorMiddleware = require("./middleware/error.middleware");
 require("dotenv").config();
-// const socket = require("socket.io");
-// const upload = require("./utils/multer");
 
 const app = express();
 
@@ -23,6 +22,10 @@ app.use(bookRouter);
 app.use(uploadRouter);
 app.use(authRouter);
 app.use(adminRouter);
+
+// error handler
+
+app.use(errorMiddleware)
 
 // multer/
 app.use("/images", express.static("upload/images"));
